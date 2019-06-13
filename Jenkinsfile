@@ -62,7 +62,7 @@ pipeline {
            docker.image('harbor.top.mw/library/ansible:centos7').inside() {
              checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false,
                        extensions: [], submoduleCfg: [],
-                       userRemoteConfigs: [[credentialsId: 'gitlab', url: 'git@github.com:mogu1986/jenkins-ansible-playbooks.git']]])
+                       userRemoteConfigs: [[credentialsId: 'gitlab', url: 'https://github.com/mogu1986/jenkins-ansible-playbooks.git']]])
 
                 ansiColor('xterm') {
                     ansiblePlaybook(
