@@ -33,7 +33,7 @@ pipeline {
 
     parameters {
         choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
-        string(name: 'JAR_PATH', defaultValue: 'target/demo.war', description: 'jar包路径，相对于workspace')
+        string(name: 'WAR_PATH', defaultValue: 'target/demo.war', description: 'jar包路径，相对于workspace')
     }
 
     stages {
@@ -70,7 +70,7 @@ pipeline {
                         inventory: "host-${params.BUILD_BRANCH}.ini",
                         hostKeyChecking: false,
                         credentialsId: 'ansible',
-                        extras: "-e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/target/demo.war",
+                        extras: "-e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/${params.WAR_PATH}",
                         colorized: true)
                 }
 
@@ -78,22 +78,6 @@ pipeline {
          }
        }
      }
-
-    /*
-        stage('ansible自动化部署') {
-            steps {
-                ansiColor('xterm') {
-                    ansiblePlaybook(
-                        playbook: 'playbook.yml',
-                        inventory: 'hosts.ini',
-                        hostKeyChecking: false,
-                        credentialsId: 'ansible',
-                        extras: "-e hosts=${params.BUILD_BRANCH} -e workspace=${env.WORKSPACE}",
-                        colorized: true)
-                }
-            }
-        }
-    */
 
         stage("邮件通知") {
             steps {
