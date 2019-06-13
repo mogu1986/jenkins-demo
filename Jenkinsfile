@@ -71,8 +71,8 @@ pipeline {
                         credentialsId: 'ansible',
                         colorized: true,
                         extraVars {
-                            extraVar("lang", "${env.LANG}", false)
-                            extraVar("app", "${env.APP_NAME}", false)
+                            extraVar("lang", "${env.LANG}", false),
+                            extraVar("app", "${env.APP_NAME}", false),
                             extraVar("war_path", "${env.WORKSPACE}/${params.WAR_PATH}", true)
                         }
                     )
