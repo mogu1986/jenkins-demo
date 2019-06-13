@@ -74,7 +74,7 @@ pipeline {
                             lang: "${env.LANG}",
                             app: [value: "${env.APP_NAME}", hidden: true],
                             war_path: "${env.WORKSPACE}/${params.WAR_PATH}"
-                        ])
+                        ]
                     )
                 }
            }
