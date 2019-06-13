@@ -66,8 +66,8 @@ pipeline {
 
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        playbook: 'playbook.yml',
-                        inventory: 'host-${params.BUILD_BRANCH}.ini',
+                        playbook: "playbook.yml",
+                        inventory: "host-${params.BUILD_BRANCH}.ini",
                         hostKeyChecking: false,
                         credentialsId: 'ansible',
                         extras: "-e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/target/demo.war",
