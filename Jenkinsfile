@@ -56,20 +56,6 @@ pipeline {
             }
         }
 
-        stage('ansible自动化部署') {
-            steps {
-                ansiColor('xterm') {
-                    ansiblePlaybook(
-                        playbook: 'playbook.yml',
-                        inventory: 'hosts.ini',
-                        hostKeyChecking: false,
-                        credentialsId: 'ansible',
-                        extras: "-e hosts=${params.BUILD_BRANCH} -e workspace=${env.WORKSPACE}",
-                        colorized: true)
-                }
-            }
-        }
-
      stage("deploy app"){
        steps{
          script{
@@ -77,13 +63,17 @@ pipeline {
              checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false,
                        extensions: [], submoduleCfg: [],
                        userRemoteConfigs: [[credentialsId: 'gitlab', url: 'git@github.com:mogu1986/jenkins-ansible-playbooks.git']]])
-             sh "pwd"
-             sh "ls target/"
-             sh """
-                export ansible.host_key_checking false
-                ansible-playbook --syntax-check playbook.yml -i host-${params.BUILD_BRANCH}.ini -e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/target/demo.war
-                ansible-playbook playbook.yml -i host-${params.BUILD_BRANCH}.ini -e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/target/demo.war
-             """
+
+                ansiColor('xterm') {
+                    ansiblePlaybook(
+                        playbook: 'playbook.yml',
+                        inventory: 'host-${params.BUILD_BRANCH}.ini',
+                        hostKeyChecking: false,
+                        credentialsId: 'ansible',
+                        extras: "-e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/target/demo.war",
+                        colorized: true)
+                }
+
            }
          }
        }
