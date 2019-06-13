@@ -11,7 +11,7 @@ pipeline {
 
     options {
         // 保留1个工程
-        buildDiscarder(logRotator(numToKeepStr: '1'))
+        buildDiscarder(logRotator(numToKeepStr: '50'))
         // 不允许同时执行多次
         disableConcurrentBuilds()
         // 整个pipeline超时时间
@@ -27,6 +27,8 @@ pipeline {
         // 容器相关配置
         IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
         K8S_CONFIG = credentials('k8s-config')
+
+        APP_NAME = "demo"
     }
 
     parameters {
@@ -35,13 +37,6 @@ pipeline {
     }
 
     stages {
-
-        stage('调试信息') {
-            steps {
-                echo "部署的环境: ${params.BUILD_BRANCH}"
-                sh "printenv"
-            }
-        }
 
         stage('拉取代码') {
             steps { git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: GIT_URL }
@@ -71,7 +66,7 @@ pipeline {
              sh "pwd"
              sh "ls target/"
              sh """
-                ansible-playbook --syntax-check playbook.yaml -i hosts.ini
+                ansible-playbook --syntax-check playbook.yaml -i host-${params.BUILD_BRANCH}.ini -e lang=tomcat -e app=${env.APP_NAME}
              """
            }
          }
