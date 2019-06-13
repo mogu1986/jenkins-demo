@@ -48,7 +48,6 @@ pipeline {
                 configFileProvider(
                     [configFile(fileId: "dev-maven-global-settings", variable: 'MAVEN_SETTINGS')]) {
                     script {
-                        sh 'ls -ll'
                         docker.image('maven:3-jdk-8-alpine').inside('-v /root/.m2:/root/.m2 -v /root/.sonar:/root/.sonar') {
                             sh 'mvn -s $MAVEN_SETTINGS clean deploy -B -Dfile.encoding=UTF-8 -Dmaven.test.skip=true -U'
                         }
@@ -94,10 +93,8 @@ pipeline {
         }
     }
 
-/*
     post {
         always {cleanWs()}
     }
-*/
 
 }
