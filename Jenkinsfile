@@ -66,7 +66,8 @@ pipeline {
              sh "pwd"
              sh "ls target/"
              sh """
-                ansible-playbook --syntax-check playbook.yml -i host-${params.BUILD_BRANCH}.ini -e lang=tomcat -e app=${env.APP_NAME}
+                ansible-playbook --syntax-check playbook.yml -i host-${params.BUILD_BRANCH}.ini -e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/target/demo.war
+                ansible-playbook playbook.yml -i host-${params.BUILD_BRANCH}.ini -e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/target/demo.war
              """
            }
          }
