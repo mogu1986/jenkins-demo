@@ -63,7 +63,6 @@ pipeline {
              checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false,
                        extensions: [], submoduleCfg: [],
                        userRemoteConfigs: [[credentialsId: 'gitlab', url: 'https://github.com/mogu1986/jenkins-ansible-playbooks.git']]])
-
                 ansiColor('xterm') {
                     ansiblePlaybook(
                         playbook: "playbook.yml",
@@ -73,7 +72,6 @@ pipeline {
                         extras: "-e lang=${env.LANG} -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/${params.WAR_PATH}",
                         colorized: true)
                 }
-
            }
          }
        }
