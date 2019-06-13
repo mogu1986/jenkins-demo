@@ -72,7 +72,7 @@ pipeline {
                         colorized: true,
                         extraVars: [
                             lang: "${env.LANG}",
-                            app: [value: "${env.APP_NAME}", hidden: true],
+                            app: [value: "${env.APP_NAME}", hidden: false],
                             war_path: "${env.WORKSPACE}/${params.WAR_PATH}"
                         ]
                     )
