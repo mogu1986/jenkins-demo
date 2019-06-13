@@ -69,8 +69,13 @@ pipeline {
                         inventory: "host-${params.BUILD_BRANCH}.ini",
                         hostKeyChecking: false,
                         credentialsId: 'ansible',
-                        extras: "-e lang=${env.LANG} -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/${params.WAR_PATH}",
-                        colorized: true)
+                        colorized: true,
+                        extraVars {
+                            extraVar("lang", "${env.LANG}", false)
+                            extraVar("app", "${env.APP_NAME}", false)
+                            extraVar("war_path", "${env.WORKSPACE}/${params.WAR_PATH}", true)
+                        }
+                    )
                 }
            }
          }
