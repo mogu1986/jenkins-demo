@@ -62,7 +62,7 @@ pipeline {
            docker.image('williamyeh/ansible:centos7').inside() {
              checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false,
                        extensions: [], submoduleCfg: [],
-                       userRemoteConfigs: [[credentialsId: 'gitlab', url: 'http://gitlab.top.mw/devops/jenkins-ansible-playbooks.git']]])
+                       userRemoteConfigs: [[credentialsId: 'gitlab', url: 'git@github.com:mogu1986/jenkins-ansible-playbooks.git']]])
              sh "pwd"
              sh "ls target/"
              sh """
