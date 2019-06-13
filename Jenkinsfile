@@ -10,7 +10,7 @@ pipeline {
     }
 
     options {
-        // 保留1个工程
+        // 保留50个工程
         buildDiscarder(logRotator(numToKeepStr: '50'))
         // 不允许同时执行多次
         disableConcurrentBuilds()
@@ -29,6 +29,7 @@ pipeline {
         K8S_CONFIG = credentials('k8s-config')
 
         APP_NAME = "demo"
+        LANG = "tomcat"
     }
 
     parameters {
@@ -70,7 +71,7 @@ pipeline {
                         inventory: "host-${params.BUILD_BRANCH}.ini",
                         hostKeyChecking: false,
                         credentialsId: 'ansible',
-                        extras: "-e lang=tomcat -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/${params.WAR_PATH}",
+                        extras: "-e lang=${env.LANG} -e app=${env.APP_NAME} -e war_path=${env.WORKSPACE}/${params.WAR_PATH}",
                         colorized: true)
                 }
 
