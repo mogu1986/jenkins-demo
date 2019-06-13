@@ -59,7 +59,7 @@ pipeline {
      stage("deploy app"){
        steps{
          script{
-           docker.image('williamyeh/ansible:centos7').inside() {
+           docker.image('williamyeh/ansible:centos70').inside() {
              checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false,
                        extensions: [], submoduleCfg: [],
                        userRemoteConfigs: [[credentialsId: 'gitlab', url: 'git@github.com:mogu1986/jenkins-ansible-playbooks.git']]])
