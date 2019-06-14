@@ -22,7 +22,6 @@ pipeline {
         // harbor 相关配置
         HARBOR = "harbor.top.mw"
         HARBOR_URL = "http://${HARBOR}"
-        HARBOR_CRED = credentials('harbor')
 
         // 容器相关配置
         IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
@@ -34,7 +33,7 @@ pipeline {
 
     parameters {
         choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
-        string(name: 'WAR_PATH', defaultValue: 'target/demo.war', description: 'jar包路径，相对于workspace')
+        string(name: 'WAR_PATH', defaultValue: 'target/demo.war', description: 'war包路径，相对于workspace')
     }
 
     stages {
@@ -46,7 +45,7 @@ pipeline {
         stage('编译') {
             steps {
                 configFileProvider(
-                    [configFile(fileId: "dev-maven-global-settings", variable: 'MAVEN_SETTINGS')]) {
+                    [configFile(fileId: "${env.BUILD_BRANCH}-maven-global-settings", variable: 'MAVEN_SETTINGS')]) {
                     script {
                         docker.image('maven:3-jdk-8-alpine').inside('-v /root/.m2:/root/.m2 -v /root/.sonar:/root/.sonar') {
                             sh "mvn -s $MAVEN_SETTINGS clean deploy -B -Dfile.encoding=UTF-8 -Dmaven.test.skip=true -U"
@@ -68,7 +67,6 @@ pipeline {
                         playbook: "playbook.yml",
                         inventory: "hosts/${params.BUILD_BRANCH}.ini",
                         hostKeyChecking: false,
-                        credentialsId: 'ansible',
                         colorized: true,
                         extraVars: [
                             lang: "${env.LANG}",
