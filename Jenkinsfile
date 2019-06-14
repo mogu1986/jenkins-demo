@@ -30,12 +30,11 @@ pipeline {
 
         APP_NAME = "demo"
         LANG = "tomcat"
-        _war = "target/demo.war"
     }
 
     parameters {
         choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
-        string(name: 'WAR_PATH', defaultValue: "${env._war}", description: 'jar包路径，相对于workspace')
+        string(name: 'WAR_PATH', defaultValue: 'target/demo.war', description: 'jar包路径，相对于workspace')
     }
 
     stages {
