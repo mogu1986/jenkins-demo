@@ -64,7 +64,7 @@ pipeline {
                        userRemoteConfigs: [[credentialsId: 'gitlab', url: 'https://github.com/mogu1986/jenkins-ansible-playbooks.git']]])
                 ansiColor('xterm') {
                     ansiblePlaybook(
-                        playbook: "playbook.yml",
+                        playbook: "playbook_${env.LANG}.yml",
                         inventory: "hosts/${params.BUILD_BRANCH}.ini",
                         hostKeyChecking: false,
                         colorized: true,
