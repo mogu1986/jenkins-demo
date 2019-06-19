@@ -6,6 +6,6 @@ map.put('app','demo')
 map.put('lang','tomcat')
 map.put('artifact','target/demo.war')
 
-map.put('sonar_java_binaries', '.')
+map.put('sonar.java.binaries', '.')
 
 pipelineCall(map)
